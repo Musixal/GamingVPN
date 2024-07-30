@@ -17,7 +17,7 @@ This project can be used both `directly` and in `reverse`. To use reverse on the
 So, in short, for direct use, the Iran server must be a client, and in case of reverse use, the external server becomes a client.
 By default, the settings are optimized for gaming. You have to choose the amount of FEC carefully because it has a great effect on the bandwidth.
 Its format is `FEC x:y`, which means send y redundant packets for every x packets. 
-For example, `FEC 2:1` means that it sends one extra packet for every two packets, which increases bandwidth consumption by `1.5 times`.In the same way, FEC 2:2 doubles the bandwidth consumption. It is also possible to turn off FEC. In networks where there is no packet loss, it is not a problem to turn it off, but if there is high packet loss, it is better to set a value such as FEc 2:1 or FEC 2:4.
+For example, `FEC 2:1` means that it sends one extra packet for every two packets, which increases bandwidth consumption by `1.5 times`.In the same way, FEC 2:2 doubles the bandwidth consumption. It is also possible to turn off FEC. In networks where there is no packet loss, it is not a problem to turn it off, but if there is high packet loss, it is better to set a value such as FEC 2:1 or FEC 2:4.
 
 # My Telegram channel
 Check the channel below for more information:

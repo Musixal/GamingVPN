@@ -2,7 +2,7 @@
 A Lightweight VPN with Build-in Forward Error Correction Support(or A Network Improving Tool which works at VPN mode). Improves your Network Quality on a High-latency Lossy Link.
 GamingVPN uses Forward Error Correction(Reed-Solomon code) to reduce packet loss rate, at the cost of additional bandwidth usage.
 Assume your local network to your server is lossy. Just establish a VPN connection to your server with GamingVPN, access your server via this VPN connection, then your connection quality will be significantly improved. With well-tuned parameters , you can easily reduce IP or UDP/ICMP packet-loss-rate to less than 0.01% . Besides reducing packet-loss-rate, GamingVPN can also significantly improve your TCP latency and TCP single-thread download speed.
-Optimized for gaming usage.
+Optimized for gaming.
 
 ## How to Run
 

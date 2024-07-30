@@ -241,7 +241,7 @@ configure_client(){
     echo
     
     # Remote Server Address
-    echo -ne "[*] Remote server address (IPv4 and [IPv6] are supported): "
+    echo -ne "[*] Remote server address (in Ipv4 or [Ipv6] format): "
     read -r IP
     if [ -z "$IP" ]; then
         colorize red "Enter a valid IP Address..." bold
@@ -320,6 +320,7 @@ check_service_status(){
     	return 1
     fi
     
+    systemctl status gamingvpn
 
 
 }

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# For personal usage
-
 # Check if the script is run as root
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
@@ -222,7 +220,7 @@ EOF
 	systemctl start gamingvpn &> /dev/null
 	
 	echo
-	colorize green "GamingVPN server started successfully."
+	colorize green "GamingVPN server started successfully." bold
 	echo
 	press_key
 }
@@ -296,7 +294,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=$CONFIG_DIR/gaming $COMMAND
+ExecStart=$CONFIG_DIR/gamingvpn $COMMAND
 Restart=always
 RestartSec=3
 
@@ -309,7 +307,7 @@ EOF
 	systemctl start gamingvpn &> /dev/null
 	
 	echo
-	colorize green "GamingVPN client started successfully."
+	colorize green "GamingVPN client started successfully." bold
 	echo
 	press_key
 }

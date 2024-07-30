@@ -320,7 +320,7 @@ check_service_status(){
     	return 1
     fi
     clear
-    systemctl status gamingvpn
+    systemctl status gamingvpn.service
 }
 
 view_logs(){
@@ -331,7 +331,7 @@ view_logs(){
     	return 1
     fi
     clear
-    journalctl -xu gamingvpn
+    journalctl -xeu gamingvpn.service
 
 }
 remove_service(){

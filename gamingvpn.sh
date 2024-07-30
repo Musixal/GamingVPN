@@ -123,7 +123,7 @@ display_logo() {
                       /___/                  
 EOF
     echo -e "${NC}${CYAN}"
-    echo -e "Version: ${YELLOW}0.5${CYAN}"
+    echo -e "Version: ${YELLOW}0.6${CYAN}"
     echo -e "Github: ${YELLOW}Github.com/Musixal/GamingVPN${CYAN}"
     echo -e "Telegram Channel: ${YELLOW}@Gozar_Xray${NC}"
 }
@@ -169,6 +169,7 @@ configure_server(){
     echo -ne "[-] Tunnel Port (default 4096): "
     read -r PORT
     if [ -z "$PORT" ]; then
+    	colorize yellow "Tunnel port 4096 selected by default."
         PORT=4096
     fi
     
@@ -193,11 +194,29 @@ configure_server(){
     echo -ne "[-] Subnet Address (default 10.22.22.0): "
     read -r SUBNET
     if [ -z "$SUBNET" ]; then
+	    colorize yellow "Subnet address 10.22.22.0 selected by default"
         SUBNET="10.22.22.0"
     fi
     
+    echo
+    
+    # Mode
+    echo -ne "[-] Mode (0 for non-game usage, 1 for game usage): "
+    read -r MODE
+    if [ -z "$MODE" ]; then
+    	colorize yellow "Optimized for gaming usage by default."
+        MODE="--mode 1  --timeout 1"
+    elif [[ "$MODE" = "0" ]]; then
+    	colorize yellow "Optimized for non-gaming usage."
+    	   MODE="--mode 0  --timeout 4"
+    else
+       	colorize yellow "Optimized for gaming usage."
+        MODE="--mode 1  --timeout 1"   	
+    fi
+    
+    
     # Final command
-    COMMAND="-s -l[::]:$PORT $FEC --sub-net $SUBNET  --mode 1  --timeout 1 --tun-dev gamingvpn --disable-obscure"
+    COMMAND="-s -l[::]:$PORT $FEC --sub-net $SUBNET  $MODE --tun-dev gamingvpn --disable-obscure"
     
         # Create the systemd service unit file
     cat << EOF > "$SERVICE_FILE"
@@ -241,10 +260,10 @@ configure_client(){
     echo
     
     # Remote Server Address
-    echo -ne "[*] Remote server address (in Ipv4 or [Ipv6] format): "
+    echo -ne "[*] Remote server address (in IPv4 or [IPv6] format): "
     read -r IP
     if [ -z "$IP" ]; then
-        colorize red "Enter a valid IP Address..." bold
+        colorize red "Enter a valid IP address..." bold
         sleep 2
         return 1
     fi
@@ -255,6 +274,7 @@ configure_client(){
     echo -ne "[-] Tunnel Port (default 4096): "
     read -r PORT
     if [ -z "$PORT" ]; then
+    	colorize yellow "Tunnel port 4096 selected by default."
         PORT=4096
     fi
     
@@ -273,18 +293,34 @@ configure_client(){
 		FEC="-f${FEC}"
     fi
 
-    
     echo
     
     # Subnet address 
     echo -ne "[-] Subnet Address (default 10.22.22.0): "
     read -r SUBNET
     if [ -z "$SUBNET" ]; then
+    	colorize yellow "Subnet address 10.22.22.0 selected by default"
         SUBNET="10.22.22.0"
     fi
     
+    echo
+    
+    # Mode
+    echo -ne "[-] Mode (0 for non-game usage, 1 for game usage): "
+    read -r MODE
+    if [ -z "$MODE" ]; then
+    	colorize yellow "Optimized for gaming usage by default."
+        MODE="--mode 1  --timeout 1"
+    elif [[ "$MODE" = "0" ]]; then
+    	colorize yellow "Optimized for non-gaming usage."
+    	   MODE="--mode 0  --timeout 4"
+    else
+       	colorize yellow "Optimized for gaming usage."
+        MODE="--mode 1  --timeout 1"   	
+    fi
+    
     # Final command
-    COMMAND="-c -r${IP}:${PORT} $FEC --sub-net $SUBNET --mode 1  --timeout 1 --tun-dev gamingvpn --keep-reconnect --disable-obscure"
+    COMMAND="-c -r${IP}:${PORT} $FEC --sub-net $SUBNET $MODE --tun-dev gamingvpn --keep-reconnect --disable-obscure"
 
     # Create the systemd service unit file
     cat << EOF > "$SERVICE_FILE"
@@ -377,6 +413,20 @@ remove_core(){
 	colorize green "GamingVPN directory deleted successfully." bold
 	sleep 2
 }
+
+restart_service(){
+	echo
+    if ! [ -f "$SERVICE_FILE" ]; then
+    	colorize red "GamingVPN service is not found" bold
+    	sleep 2
+    	return 1
+    fi
+    
+    systemctl restart gamingvpn.service &> /dev/null
+    colorize green "GamingVPN service restarted successfully." bold
+	sleep 2
+
+}
 # Color codes
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -395,10 +445,11 @@ display_menu() {
     echo
     colorize green " 1. Configure for server" bold
     colorize cyan " 2. Configure for client" bold
-    colorize yellow " 3. Check service status" 
-    colorize red " 4. Remove all services"
-    colorize red " 5. Remove core files"
-    colorize reset " 6. View logs"
+    colorize magenta " 3. Check service status" 
+    colorize yellow " 4. View logs"
+    colorize yellow " 5. Restart service" 
+    colorize red " 6. Remove service"
+    colorize red " 7. Remove core files"
     echo -e " 0. Exit"
     echo
     echo "-------------------------------"
@@ -406,14 +457,15 @@ display_menu() {
 
 # Function to read user input
 read_option() {
-    read -p "Enter your choice [0-6]: " choice
+    read -p "Enter your choice [0-7]: " choice
     case $choice in
         1) configure_server ;;
         2) configure_client ;;
         3) check_service_status ;;
-        4) remove_service ;;
-        5) remove_core;;
-        6) view_logs;;
+	    4) view_logs;;
+	    5) restart_service;;
+        6) remove_service ;;
+        7) remove_core;;
         0) exit 0 ;;
         *) echo -e "${RED} Invalid option!${NC}" && sleep 1 ;;
     esac

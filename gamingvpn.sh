@@ -319,12 +319,21 @@ check_service_status(){
     	sleep 2
     	return 1
     fi
-    
+    clear
     systemctl status gamingvpn
-
-
 }
 
+view_logs(){
+	echo
+    if ! [ -f "$SERVICE_FILE" ]; then
+    	colorize red "GamingVPN service is not found" bold
+    	sleep 2
+    	return 1
+    fi
+    clear
+    journalctl -xu gamingvpn
+
+}
 remove_service(){
 	echo
     if ! [ -f "$SERVICE_FILE" ]; then

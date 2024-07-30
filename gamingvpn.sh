@@ -321,6 +321,9 @@ check_service_status(){
     fi
     clear
     systemctl status gamingvpn.service
+    
+    echo
+    press_key
 }
 
 view_logs(){
@@ -332,6 +335,10 @@ view_logs(){
     fi
     clear
     journalctl -xeu gamingvpn.service
+    
+    echo
+    
+    press_key
 
 }
 remove_service(){
